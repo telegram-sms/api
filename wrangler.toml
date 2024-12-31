@@ -112,3 +112,6 @@ enabled = true
 # [[vectorize]]
 # binding = "MY_INDEX"
 # index_name = "my-index"
+[[kv_namespaces]]
+binding = "telegram_config"
+id = "0103fdf715ba46f8960fb3eb784bc3a6"

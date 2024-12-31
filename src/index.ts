@@ -1,18 +1,30 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { AutoRouter } from 'itty-router';
+import Snowflake from './snowflake';
 
-export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
-	},
-} satisfies ExportedHandler<Env>;
+const router = AutoRouter();
+
+router.get('/', () => {
+	return new Response('Hello Workers', {
+		status: 200
+	});
+});
+
+router.put('/config', async (request, env) => {
+	const config = await request.json();
+	const snowflake = Snowflake.getInstance();
+	const key = snowflake.generateKey();
+	await env.telegram_config.put(key, config);
+	return new Response(JSON.stringify(
+			{ key: key }
+		), {
+			status: 200
+		});
+});
+
+router.get('/config', async (request, env) => {
+	const config = await env.telegram_config.get(request.query['key']);
+	return new Response(config, {
+		status: 200
+	});
+});
+export default { ...router };
