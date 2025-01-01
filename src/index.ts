@@ -18,7 +18,7 @@ router.put('/config', async (request, env) => {
 	return new Response(JSON.stringify(
 		{ key: key }
 	), {
-		status: 200
+		status: 20
 	});
 });
 
@@ -27,6 +27,7 @@ router.get('/config', async (request, env) => {
 	if (config === null) {
 		return new Response('Value not found', { status: 404 });
 	}
+	await env.telegram_config.delete(request.query['key']);
 	return new Response(config, {
 		status: 200
 	});
