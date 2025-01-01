@@ -12,10 +12,14 @@ const router = AutoRouter({
   before: [preflight],  // add preflight upstream
   finally: [corsify],   // and corsify downstream
 });
+/*const router = AutoRouter();*/
 
 router.get('/', () => {
-  return new Response('Hello Workers', {
-    status: 200
+  return new Response('', {
+    status: 302,
+		headers: {
+			'Location': 'https://telegram-sms.com'
+		}
   });
 });
 
