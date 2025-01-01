@@ -10,21 +10,22 @@ router.get('/', () => {
 });
 
 router.put('/config', async (request, env) => {
-	const config = await request.json();
+	const config: any = await request.json();
+	const encryptConfig = config.encrypt;
 	const snowflake = Snowflake.getInstance();
 	const key = snowflake.generateKey();
-	await env.telegram_config.put(key, config, { expirationTtl: 86400 });
+	await env.telegram_config.put(key, encryptConfig, { expirationTtl: 3600 });
 	return new Response(JSON.stringify(
-			{ key: key }
-		), {
-			status: 200
-		});
+		{ key: key }
+	), {
+		status: 200
+	});
 });
 
 router.get('/config', async (request, env) => {
 	const config = await env.telegram_config.get(request.query['key']);
 	if (config === null) {
-		return new Response("Value not found", { status: 404 });
+		return new Response('Value not found', { status: 404 });
 	}
 	return new Response(config, {
 		status: 200
