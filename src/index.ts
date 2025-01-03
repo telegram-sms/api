@@ -3,7 +3,7 @@ import Snowflake from './snowflake';
 
 // get preflight and corsify pair
 const { preflight, corsify } = cors({
-	origin: 'https://telegram-sms.com',
+	origin: ["http://localhost:5173","https://config.telegram-sms.com"],
   allowMethods: ['GET', 'PUT'],
   allowHeaders: ['Content-Type']
 });
@@ -12,7 +12,6 @@ const router = AutoRouter({
   before: [preflight],  // add preflight upstream
   finally: [corsify],   // and corsify downstream
 });
-/*const router = AutoRouter();*/
 
 router.get('/', () => {
   return new Response('', {
