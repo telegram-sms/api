@@ -116,3 +116,7 @@ enabled = true
 binding = "telegram_config"
 id = "c68bf1fd2c3b44a1b20f5ad4a9fb12af"
 
+[[kv_namespaces]]
+binding = "cc_config"
+id = "e6f84b4b77984df6b1ae992a97f3d79e"
+
